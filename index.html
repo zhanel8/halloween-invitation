@@ -6,161 +6,208 @@
     <title>Хэллоуин Шақыруы</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        /* Halloween invitation - single-file page */
+        /* Improved Halloween invitation with animations */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html, body { height: 100%; }
+        :root{
+            --bg-1: #050209;
+            --accent-1: #ff7a1a;
+            --accent-2: #00ffd1;
+            --muted: #cbb6ea;
+        }
         body {
-            background: radial-gradient(ellipse at 10% 10%, #2b0b2b 0%, #050209 40%, #010005 100%);
+            background: radial-gradient(ellipse at 10% 10%, #2b0b2b 0%, var(--bg-1) 45%, #000 100%);
             color: #fff;
             font-family: 'Montserrat', sans-serif;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 24px;
-            overflow-x: hidden;
-        }
-        .invitation-card {
-            background: linear-gradient(135deg, #12071f 0%, #08020d 100%);
-            border: 2px solid #ff5500;
-            border-radius: 20px;
-            max-width: 720px;
-            width: 100%;
-            padding: 36px 28px;
-            text-align: center;
-            box-shadow: 0 0 30px rgba(255, 85, 0, 0.18), inset 0 0 15px rgba(138, 43, 226, 0.08);
-            position: relative;
+            padding: 28px;
             overflow: hidden;
         }
-        /* decorative moon */
+
+        /* Card */
+        .invitation-card {
+            background: linear-gradient(180deg, rgba(18,7,31,0.9), rgba(8,2,13,0.95));
+            border: 1px solid rgba(255,120,40,0.08);
+            border-radius: 18px;
+            width: min(820px, 96%);
+            padding: 36px 32px;
+            text-align: center;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.6), inset 0 0 40px rgba(120,20,200,0.02);
+            position: relative;
+            overflow: visible;
+        }
+
+        /* glowing moon */
         .moon {
             position: absolute;
-            right: -60px;
-            top: -60px;
-            width: 220px;
-            height: 220px;
-            background: radial-gradient(circle at 35% 30%, #fff7c2 0%, #ffe69a 18%, #ffd27a 45%, transparent 60%);
+            right: -80px;
+            top: -80px;
+            width: 260px;
+            height: 260px;
+            background: radial-gradient(circle at 30% 28%, #fff9d2 0%, #ffeaa0 20%, #ffd47a 50%, transparent 62%);
             opacity: 0.12;
             border-radius: 50%;
-            transform: rotate(-15deg);
+            transform: rotate(-10deg);
             filter: blur(6px);
             pointer-events: none;
+            animation: slow-rotate 18s linear infinite;
         }
-        .badge {
-            background: #ff5500;
-            color: #000;
-            font-weight: 800;
-            font-size: 0.8rem;
-            padding: 6px 16px;
-            border-radius: 20px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            display: inline-block;
-            margin-bottom: 14px;
+        @keyframes slow-rotate { from{ transform: rotate(0deg) } to{ transform: rotate(360deg) } }
+
+        /* header */
+        .badge { background: var(--accent-1); color: #050007; font-weight:800; font-size:.82rem; padding:6px 16px; border-radius:24px; display:inline-block; margin-bottom:14px; letter-spacing:1.6px; text-transform:uppercase; }
+        h1 { font-family: 'Cinzel', serif; font-size:2.6rem; color: var(--accent-1); margin-bottom:6px; text-shadow: 0 6px 22px rgba(255,120,30,0.12); animation: flicker 3s infinite; }
+        @keyframes flicker{
+            0%, 19%, 21%, 50%, 100% { text-shadow: 0 0 12px rgba(255,120,30,0.6); }
+            20% { text-shadow: 0 0 4px rgba(255,120,30,0.2); }
+            51% { text-shadow: none; opacity: .96 }
         }
-        h1 {
-            font-family: 'Cinzel', serif;
-            font-size: 2.2rem;
-            color: #ff6600;
-            margin-bottom: 8px;
-            text-shadow: 0 0 12px rgba(255, 102, 0, 0.5);
+        .subtitle { font-size:1.05rem; color:var(--muted); margin-bottom:14px; font-weight:600 }
+        .subtitle span{ color: var(--accent-2); }
+
+        /* animated ghosts */
+        .ghosts { position:absolute; left:18px; bottom:-10px; pointer-events:none; }
+        .ghost { width:80px; height:80px; margin: 6px; display:inline-block; filter: drop-shadow(0 12px 18px rgba(0,0,0,0.6)); }
+        .ghost svg { width:100%; height:100%; fill: rgba(255,255,255,0.95); opacity: .92 }
+        .g1 { transform-origin: center; animation: floaty 6s ease-in-out infinite; }
+        .g2 { transform-origin: center; animation: floaty 7.4s ease-in-out 0.4s infinite; opacity:.9 }
+        @keyframes floaty{
+            0%{ transform: translateY(0) translateX(0) rotate(-2deg) }
+            50%{ transform: translateY(-22px) translateX(8px) rotate(2deg) }
+            100%{ transform: translateY(0) translateX(0) rotate(-2deg) }
         }
-        .subtitle {
-            font-size: 1.05rem;
-            color: #cbb6ea;
-            margin-bottom: 18px;
-            font-weight: 600;
+
+        /* flying bats across */
+        .bat-wrap { position:absolute; left:0; top:6%; width:100%; height:1px; pointer-events:none }
+        .bat { position:absolute; width:70px; height:44px; opacity: .12; }
+        .bat svg{ width:100%; height:100%; fill: #fff }
+        .bat.fly1{ left:-120px; animation: bat-fly 9s linear infinite; animation-delay: .2s }
+        .bat.fly2{ left:-110px; top:28%; animation: bat-fly 12s linear infinite; animation-delay: 1.8s }
+        .bat.fly3{ left:-140px; top:48%; animation: bat-fly 10s linear infinite; animation-delay: 0.9s }
+        @keyframes bat-fly{
+            0%{ transform: translateX(0) translateY(0) rotate(0deg); opacity:.06 }
+            30%{ opacity:.18 }
+            50%{ transform: translateX(110vw) translateY(-12vh) rotate(15deg); opacity:.28 }
+            100%{ transform: translateX(220vw) translateY(-20vh) rotate(25deg); opacity:.06 }
         }
-        .subtitle span { color: #00ffcc; }
-        .guest-box {
-            background: rgba(0,0,0,0.55);
-            border: 1px dashed #b026ff;
-            padding: 12px;
-            border-radius: 10px;
-            color: #ffeb3b;
-            font-weight: 700;
-            margin-bottom: 18px;
-            display: inline-block;
+
+        /* content blocks */
+        .guest-box { background: rgba(0,0,0,0.5); border: 1px dashed rgba(176,38,255,0.14); padding:12px 14px; border-radius:10px; color:#ffeb3b; font-weight:700; display:inline-block; margin-bottom:16px }
+        .topics { background: linear-gradient(180deg, rgba(20,10,35,0.88), rgba(10,4,20,0.95)); border-left:4px solid var(--accent-2); padding:16px; border-radius:10px; text-align:left; margin: 0 auto 20px auto; font-size:1rem; line-height:1.6; max-width:640px }
+        .topics p{ margin-bottom:8px }
+        .topics strong{ color: var(--accent-2) }
+
+        /* CTA */
+        .btn { display:inline-block; background: linear-gradient(45deg, #00b09b, #96c93d); color:#030107; padding:14px 32px; font-size:1.05rem; font-weight:900; text-decoration:none; border-radius:30px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); transition: transform .16s cubic-bezier(.2,.9,.2,1); }
+        .btn:hover { transform: translateY(-8px); }
+
+        .footer-note { margin-top:18px; color: #bfa2e6; font-size:.9rem }
+
+        /* modal */
+        .overlay { position:fixed; inset:0; background: rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; z-index:40; opacity:0; pointer-events:none; transition: opacity .18s ease }
+        .overlay.open{ opacity:1; pointer-events:auto }
+        .modal { background: linear-gradient(180deg,#09020a,#1b0720); border-radius:12px; padding:20px; width:min(520px,92%); box-shadow:0 18px 56px rgba(0,0,0,0.7); color:#fff; transform: translateY(12px); transition: transform .2s ease }
+        .overlay.open .modal{ transform: translateY(0) }
+
+        /* accessibility small screens */
+        @media (max-width:600px){
+            h1{ font-size:1.8rem }
+            .btn{ padding:12px 20px }
+            .ghost{ width:64px; height:64px }
+            .bat{ width:52px }
         }
-        .topics {
-            background: rgba(20, 10, 35, 0.9);
-            border-left: 4px solid #00ffcc;
-            padding: 14px;
-            border-radius: 8px;
-            text-align: left;
-            margin: 0 auto 20px auto;
-            font-size: 0.98rem;
-            line-height: 1.6;
-            max-width: 560px;
-        }
-        .topics strong { color: #00ffcc; }
-        .btn {
-            display: inline-block;
-            background: linear-gradient(45deg, #00b09b, #96c93d);
-            color: #030107;
-            padding: 12px 26px;
-            font-size: 1.05rem;
-            font-weight: 900;
-            text-decoration: none;
-            border-radius: 30px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.45), 0 0 10px rgba(150,201,61,0.08) inset;
-            transition: transform .18s ease, box-shadow .18s ease, opacity .12s ease;
-            margin-top: 8px;
-        }
-        .btn:active { transform: translateY(1px); }
-        .btn:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 45px rgba(0,0,0,0.6), 0 0 30px rgba(0,176,155,0.14) inset;
-            opacity: 0.98;
-        }
-        .small { font-size: 0.84rem; opacity: 0.9; }
-        .footer-note { margin-top: 18px; color: #bfa2e6; font-size: 0.85rem; }
-        /* bats (simple) */
-        .bat { position: absolute; width: 60px; height: 40px; right: 12px; top: 18px; opacity: 0.12; }
-        .bat svg { width: 100%; height: 100%; fill: #fff; }
-        /* responsive */
-        @media (max-width: 520px) {
-            .invitation-card { padding: 22px 16px; }
-            h1 { font-size: 1.6rem; }
-            .topics { font-size: 0.95rem; }
-        }
+
     </style>
 </head>
 <body>
     <main class="invitation-card" role="main" aria-labelledby="invite-title">
         <div class="moon" aria-hidden="true"></div>
-        <div class="bat" aria-hidden="true">
-            <!-- simple bat silhouette -->
-            <svg viewBox="0 0 64 40" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-                <path d="M2 22c6-6 14-4 22-2 6-6 14-8 22 0 8-6 16-8 22 2-6 2-16 6-22 6-8 0-16-4-22-6-8 2-16 6-22 6z"/>
-            </svg>
+
+        <div class="bat-wrap" aria-hidden="true">
+            <div class="bat fly1" style="top:6%;"><svg viewBox="0 0 64 40" preserveAspectRatio="xMidYMid meet"><path d="M2 22c6-6 14-4 22-2 6-6 14-8 22 0 8-6 16-8 22 2-6 2-16 6-22 6-8 0-16-4-22-6-8 2-16 6-22 6z"/></svg></div>
+            <div class="bat fly2" style="top:28%;"><svg viewBox="0 0 64 40" preserveAspectRatio="xMidYMid meet"><path d="M2 22c6-6 14-4 22-2 6-6 14-8 22 0 8-6 16-8 22 2-6 2-16 6-22 6-8 0-16-4-22-6-8 2-16 6-22 6z"/></svg></div>
+            <div class="bat fly3" style="top:48%;"><svg viewBox="0 0 64 40" preserveAspectRatio="xMidYMid meet"><path d="M2 22c6-6 14-4 22-2 6-6 14-8 22 0 8-6 16-8 22 2-6 2-16 6-22 6-8 0-16-4-22-6-8 2-16 6-22 6z"/></svg></div>
         </div>
 
         <span class="badge">Шақыру</span>
         <h1 id="invite-title">Хэллоуин Жұптық Жұмыс</h1>
-        <div class="subtitle">Келіңіздер — <span>күні: 31 Қазан</span> • Уақыты: 19:00</div>
+        <div class="subtitle">Келіңіздер — <span>31 Қазан</span> • Уақыты: 19:00</div>
 
         <div class="guest-box" aria-label="Қонақ">Арнайы қонақ: <span style="color:#ffb86b;">Сенің атың</span></div>
 
         <div class="topics" aria-label="Іс-шара туралы">
             <p><strong>Орын:</strong> Қала орталығы, 12-механ үйі (жарық зал)</p>
-            <p><strong>Костюм тесті:</strong> Жеңіл, шығармашылық — ең жақсы костюм үшін сыйлық</p>
-            <p><strong>Бағдарлама:</strong> Қызықты ойындар, квест, жеңіл тамақ және музыкa.</p>
+            <p><strong>Костюм тесті:</strong> Шығармашылық — ең жақсы костюм үшін сыйлық</p>
+            <p><strong>Бағдарлама:</strong> Қызықты ойындар, кве��т, жеңіл тамақ және музыкa.</p>
         </div>
 
         <a class="btn" href="#rsvp" id="rsvp-button">RSVP — Қатысамын</a>
 
-        <p class="footer-note small">Ескерту: оқиға ашық — жастағы шектеу жоқ. Қосымша сұрақтар үшін ұйымдастырушыға хабарласыңыз.</p>
+        <p class="footer-note">Ескерту: оқиға ашық — жастағы шектеу жоқ. Қосымша сұрақтар үшін ұйымдастырушыға хабарласыңыз.</p>
+
+        <!-- decorative ghosts -->
+        <div class="ghosts" aria-hidden="true">
+            <span class="ghost g1">
+                <svg viewBox="0 0 64 64" preserveAspectRatio="xMidYMid meet"><path d="M32 4c10 0 18 6 18 18v10c0 2-1 4-2.5 5.3C45 41 42 44 32 44s-13-3-15.5-6.7C15 36 14 34 14 32V22C14 10 22 4 32 4zM26 28a3 3 0 110-6 3 3 0 010 6zm12 0a3 3 0 110-6 3 3 0 010 6z"/></svg>
+            </span>
+            <span class="ghost g2">
+                <svg viewBox="0 0 64 64" preserveAspectRatio="xMidYMid meet"><path d="M30 6c8 0 14 5 14 15v9c0 1-1 3-2 4-2 2-5 6-10 6s-8-4-10-6c-1-1-2-3-2-4V21c0-10 6-15 12-15zM24 27a2.5 2.5 0 110-5 2.5 2.5 0 010 5zm10 0a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>
+            </span>
+        </div>
+
+        <!-- simple modal for RSVP -->
+        <div id="overlay" class="overlay" role="dialog" aria-modal="true" aria-hidden="true">
+            <div class="modal" role="document">
+                <h2 style="font-family:Cinzel, serif; color:var(--accent-1); margin-bottom:8px;">Растау</h2>
+                <p style="color:var(--muted); margin-bottom:14px">Өз атыңызды және қатысуыңыз туралы қысқаша хабарлама қалдырыңыз.</p>
+                <form id="rsvp-form">
+                    <input id="guest-name" name="name" placeholder="Сіздің атыңыз" style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); margin-bottom:10px; background:transparent; color:#fff" required>
+                    <textarea id="guest-note" name="note" rows="3" placeholder="Қысқаша хабарлама (міндетті емес)" style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background:transparent; color:#fff"></textarea>
+                    <div style="display:flex; gap:10px; margin-top:12px; justify-content:flex-end">
+                        <button type="button" id="close-modal" style="background:transparent; border:0; color:var(--muted); font-weight:700">Болдырмау</button>
+                        <button type="submit" style="background:linear-gradient(45deg,#ff7a1a,#ffdd66); border:0; padding:10px 16px; border-radius:8px; font-weight:800">Жіберу</button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <script>
-            // Small client-side behavior to demo the button
-            document.getElementById('rsvp-button').addEventListener('click', function(e) {
+            // Modal logic
+            const rsvpBtn = document.getElementById('rsvp-button');
+            const overlay = document.getElementById('overlay');
+            const closeBtn = document.getElementById('close-modal');
+            const form = document.getElementById('rsvp-form');
+            rsvpBtn.addEventListener('click', e => {
                 e.preventDefault();
-                // lightweight modal-style confirmation
-                var name = prompt('Өз атыңызды енгізіңіз, өтініш:');
-                if (!name) return alert('Рахмет! Сізге бұрын хабарласамыз.');
-                alert('Рахмет, ' + name + '! Біз сізді 31 қазанда күтеміз.');
+                overlay.classList.add('open');
+                overlay.setAttribute('aria-hidden', 'false');
+                document.getElementById('guest-name').focus();
             });
+            closeBtn.addEventListener('click', () => {
+                overlay.classList.remove('open');
+                overlay.setAttribute('aria-hidden', 'true');
+            });
+            overlay.addEventListener('click', e => { if (e.target === overlay) { overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true') } });
+            form.addEventListener('submit', e => {
+                e.preventDefault();
+                const name = document.getElementById('guest-name').value.trim();
+                const note = document.getElementById('guest-note').value.trim();
+                overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true');
+                // here we just show a friendly animation/confirmation
+                const conf = document.createElement('div');
+                conf.style.position = 'fixed'; conf.style.left='50%'; conf.style.top='12%'; conf.style.transform='translateX(-50%)'; conf.style.padding='14px 20px'; conf.style.background='linear-gradient(90deg,#1b0220,#201025)'; conf.style.border='1px solid rgba(255,120,30,0.08)'; conf.style.borderRadius='12px'; conf.style.boxShadow='0 12px 40px rgba(0,0,0,0.6)'; conf.style.color='#fff'; conf.style.zIndex=60; conf.style.fontWeight=700; conf.innerText = `Рахмет, ${name || 'Дос'}! Сіз тіркелдіңіз.`;
+                document.body.appendChild(conf);
+                setTimeout(()=>{ conf.style.transition='opacity .6s ease'; conf.style.opacity='0'; setTimeout(()=>conf.remove(),700) }, 2200);
+                // (optional) send to a server or store — left as exercise
+            });
+
+            // reduce motion preference
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelectorAll('*').forEach(el => el.style.animation = 'none');
+            }
         </script>
     </main>
 </body>
